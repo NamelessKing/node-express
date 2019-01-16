@@ -10,7 +10,7 @@ const app = express();
 app.use(morgan('dev'));//using morgan in development for printing out additional information 
 app.use(bodyParser.json());//allows to parse the body of the request message which is formatted in JSON
 
-app.all('/dishes', (req, res, next) => { 
+app.all('/dishes', (req, res, next) => {
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/plain');
     next();
@@ -31,6 +31,26 @@ app.put('/dishes', (req, res, next) => {
 
 app.delete('/dishes', (req, res, next) => {
     res.end(`Deleting all the dishes`);
+});
+
+//routes with parameters
+
+app.get('/dishes/:dishId', (req, res, next) => {
+    res.end(`Will send all details of dish: ${req.params.dishId}`);
+});
+
+app.post('/dishes/:dishId', (req, res, next) => {
+    res.statusCode = 403;
+    res.end(`POST operation not supported on /dishes/${req.params.dishId}`);
+});
+
+app.put('/dishes/:dishId', (req, res, next) => {
+    res.write(`Updating the dish: ${req.params.dishId} \n`);
+    res.end(`Will update the dish: ${req.body.name} with details ${req.body.description}`);
+});
+
+app.delete('/dishes/:dishId', (req, res, next) => {
+    res.end(`Deleting dish ${req.params.dishId}`);
 });
 
 
